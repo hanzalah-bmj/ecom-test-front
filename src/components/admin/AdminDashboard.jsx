@@ -1,5 +1,5 @@
 // AdminDashboard.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import AdminLayout from './AdminLayout';
 import AdminHome from './AdminHome';
@@ -12,12 +12,19 @@ import Allusers from './users/Allusers';
 const AdminDashboard = ({ children }) => {
   const navigate = useNavigate();
   const isLoggedIn = /* Your logic to check if the user is logged in */ true;
+  const isAdmin = /* Your logic to check if the user has admin role */ true;
 
-  if (!isLoggedIn) {
-    navigate('/signin');
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/signin');
+    } else if (!isAdmin) {
+      navigate('/user-dashboard'); // Change this to your user dashboard route
+    }
+  }, [isLoggedIn, isAdmin, navigate]);
+
+  if (!isLoggedIn || !isAdmin) {
     return null;
   }
-
   return (
     <AdminLayout>
       <Routes>

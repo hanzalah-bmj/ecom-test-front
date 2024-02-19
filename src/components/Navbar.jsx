@@ -27,23 +27,23 @@ const Navbar = () => {
           items: [
             {
               label: "Luxurious Italian Bed",
-              href: "",
+              to: "",
             },
-            { label: "Elegant Queen-size Bed", href: "" },
+            { label: "Elegant Queen-size Bed", to: "" },
             {
               label: "Artisan Wooden Craft Bed",
-              href: "",
+              to: "",
             },
-            { label: "Royal King-size Bed", href: "" },
+            { label: "Royal King-size Bed", to: "" },
           ],
         },
         {
           title: "BEDS",
           items: [
-            { label: "Classic Italian Bed", href: "" },
-            { label: "Regal Queen-size Bed", href: "" },
-            { label: "Handcrafted Wooden Bed", href: "" },
-            { label: "Majestic King-size Bed", href: "" },
+            { label: "Classic Italian Bed", to: "" },
+            { label: "Regal Queen-size Bed", to: "" },
+            { label: "Handcrafted Wooden Bed", to: "" },
+            { label: "Majestic King-size Bed", to: "" },
           ],
         },
       ],
@@ -58,16 +58,16 @@ const Navbar = () => {
           items: [
             {
               label: "Sleek Italian Outdoor Bed",
-              href: "",
+              to: "",
             },
-            { label: "Outdoor Queen-size Bed", href: "" },
+            { label: "Outdoor Queen-size Bed", to: "" },
             {
               label: "Natural Wooden Craft Bed",
-              href: "",
+              to: "",
             },
             {
               label: "Innovative King-size Outdoor Bed",
-              href: "new-",
+              to: "new-",
             },
           ],
         },
@@ -76,11 +76,11 @@ const Navbar = () => {
           items: [
             {
               label: "Vibrant Italian Purple Lamp",
-              href: "",
+              to: "",
             },
-            { label: "High-tech APEX Lamp", href: "" },
-            { label: "Modern PIXAR Lamp", href: "" },
-            { label: "Ambient Nightlamp", href: "" },
+            { label: "High-tech APEX Lamp", to: "" },
+            { label: "Modern PIXAR Lamp", to: "" },
+            { label: "Ambient Nightlamp", to: "" },
           ],
         },
       ],
@@ -92,22 +92,22 @@ const Navbar = () => {
         {
           title: "kitchen",
           items: [
-            { label: "Gourmet Italian Bed", href: "" },
-            { label: "Designer Queen-size Bed", href: "" },
+            { label: "Gourmet Italian Bed", to: "" },
+            { label: "Designer Queen-size Bed", to: "" },
             {
               label: "Premium Wooden Craft Bed",
-              href: "",
+              to: "",
             },
-            { label: "Modern King-size Bed", href: "" },
+            { label: "Modern King-size Bed", to: "" },
           ],
         },
         {
           title: "SPECIAL",
           items: [
-            { label: "Aromatherapy Humidifier", href: "" },
-            { label: "Advanced Bed Cleaner", href: "" },
-            { label: "Smart Vacuum Cleaner", href: "" },
-            { label: "Plush Pillow", href: "" },
+            { label: "Aromatherapy Humidifier", to: "" },
+            { label: "Advanced Bed Cleaner", to: "" },
+            { label: "Smart Vacuum Cleaner", to: "" },
+            { label: "Plush Pillow", to: "" },
           ],
         },
       ],
@@ -213,7 +213,7 @@ const Navbar = () => {
                         <ul className="leading-8 text-sm">
                           {submenu.items.map((item, itemIndex) => (
                             <li key={itemIndex}>
-                              <Link to={item.href}>{item.label}</Link>
+                              <Link to={item.to}>{item.label}</Link>
                             </li>
                           ))}
                         </ul>
