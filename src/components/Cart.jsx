@@ -1,4 +1,4 @@
-import { Heart, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import React from 'react'
 
 const products = [
@@ -52,7 +52,7 @@ export default function Cart() {
             <h2 id="cart-heading" className="sr-only">
               Items in your shopping cart
             </h2>
-            <ul role="list" className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200">
               {products.map((product, productIdx) => (
                 <div key={product.id} className="">
                   <li className="flex py-6 sm:py-6 ">
@@ -152,7 +152,7 @@ export default function Cart() {
                 </div>
                 <div className="flex items-center justify-between border-y border-dashed py-4 ">
                   <dt className="text-base font-medium text-gray-900">Total Amount</dt>
-                  <dd className="text-base font-medium text-gray-900">₹ 48,967</dd>
+                  <dd classsName="text-base font-medium text-gray-900">₹ 48,967</dd>
                 </div>
               </dl>
               <div className="px-2 pb-4 font-medium text-green-700">

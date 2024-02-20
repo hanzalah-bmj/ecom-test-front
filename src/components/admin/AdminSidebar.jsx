@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, BarChart, ShoppingBag, List } from 'lucide-react'; // Import additional icons as needed
+import { Home, ShoppingBag, List } from 'lucide-react'; // Import additional icons as needed
 
 const AdminSidebar = () => {
   const [openSubMenu, setOpenSubMenu] = useState(null);

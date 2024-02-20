@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useData from '../hooks/useData';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react'
 
@@ -29,8 +29,8 @@ export default function Signin() {
           // Check user role and redirect accordingly
           if (res.data.userRole === 'Administrator') {
             navigate('/admin/home');
-          } else if (res.data.userRole === 'Costumer') {
-            navigate('/users/account');
+          } else if (res.data.userRole === 'Customer') {
+            navigate('/users/');
           } else {
             // Handle other roles if needed
           }
@@ -53,13 +53,13 @@ export default function Signin() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
             Don&apos;t have an account?{' '}
-            <a
+            {/* <a
               href="#"
               title=""
               className="font-semibold text-black transition-all duration-200 hover:underline"
             >
               Create a free account
-            </a>
+            </a> */}
           </p>
           <form action="#" method="POST" className="mt-8">
             <div className="space-y-5">
@@ -83,10 +83,10 @@ export default function Signin() {
                     {' '}
                     Password{' '}
                   </label>
-                  <a href="#" title="" className="text-sm font-semibold text-black hover:underline">
+                  {/* <a href="#" title="" className="text-sm font-semibold text-black hover:underline">
                     {' '}
                     Forgot password?{' '}
-                  </a>
+                  </a> */}
                 </div>
                 <div className="mt-2">
                   <input
@@ -113,38 +113,3 @@ export default function Signin() {
     </section>
   );
 }
-
-
-
-
-// <div className='container mt-5'>
-//   <div className='border border-2 p-3 d-flex flex-column'>
-//     <h1 className='text-center'>Sign In</h1>
-
-//     <input
-//       className='d-block m-auto mt-3 mx-5'
-//       type='text'
-//       placeholder='Write Unique UserName'
-//       onChange={(e) => {
-//         setLogUName(e.target.value);
-//       }}
-//     />
-//     <input
-//       className='d-block m-auto mt-3 mx-5'
-//       type='password'
-//       placeholder='Password'
-//       onChange={(e) => {
-//         setLogPwd(e.target.value);
-//       }}
-//     />
-
-//     <button className='btn btn-primary d-block mt-3 mx-5' onClick={login}>
-//       Login
-//     </button>
-
-//     <span className='d-block text-center mt-3'>
-//       {' '}
-//       <Link to={'/signup'}>don't have an account ?</Link>{' '}
-//     </span>
-//   </div>
-// </div>

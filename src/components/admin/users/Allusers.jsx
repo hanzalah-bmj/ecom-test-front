@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
 export default function Allusers() {
   const [person, setPerson] = useState([]);
   const url = 'http://localhost:5000/userdata';
+  useEffect(() => {
   axios
-      .post(url)
+      .post(url, person)
       .then((res) => {
-        console.log(res.data);
         setPerson(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+    }, [url, person]);
   return (
 <>
       <section className="mx-auto w-full max-w-7xl px-4 py-4">
@@ -101,13 +103,13 @@ export default function Allusers() {
                           {items.userRole}
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                        <a href="#" className="text-gray-700">
+                        {/* <a href="#" className="text-gray-700">
                             Edit
                           </a>
                           <br />
                           <a href="#" className="text-gray-700">
                             View
-                          </a>
+                          </a> */}
                         </td>
                       </tr>
                     ))}
@@ -118,7 +120,7 @@ export default function Allusers() {
           </div>
         </div>
         <div className="flex items-center justify-center pt-6">
-          <a href="#" className="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900">
+          {/* <a href="#" className="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900">
             <span className="hidden lg:block">&larr; Previous</span>
             <span className="block lg:hidden">&larr;</span>
           </a>
@@ -149,7 +151,7 @@ export default function Allusers() {
           <a href="#" className="mx-2 text-sm font-semibold text-gray-900">
             <span className="hidden lg:block">Next &rarr;</span>
             <span className="block lg:hidden">&rarr;</span>
-          </a>
+          </a> */}
         </div>
       </section>
     </>

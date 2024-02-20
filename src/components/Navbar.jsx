@@ -9,7 +9,7 @@ import { MdOutdoorGrill } from "react-icons/md";
 const Navbar = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [defaultCategory, setDefaultCategory] = useState("Bedroom");
+  const [defaultCategory] = useState("Bedroom");
   const navItems = [
     { label: "Home", to: "/" },
     { label: "Catalog", to: "/catalog" },

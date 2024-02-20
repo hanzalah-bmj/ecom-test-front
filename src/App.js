@@ -34,7 +34,7 @@ export default function App() {
         <Route path="/signin" element={<DefaultLayout><Signin /></DefaultLayout>} />
         <Route path="*" element={<DefaultLayout><ErrorPage /></DefaultLayout>} />
         {/* User Dashboard */}
-        <Route path="/users/*" element={<UserDashboard />} />
+        <Route path="/users/*" element={<DefaultLayout><UserDashboard /></DefaultLayout>} />
 
         {/* Admin Dashboard */}
         <Route path="/admin/*" element={<AdminDashboard />} />

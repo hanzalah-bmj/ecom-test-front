@@ -9,15 +9,16 @@ const Allproducts = () => {
 
   useEffect(() => {
     axios
-      .post(url)
+      .post(url, products)
       .then((res) => {
-        console.log(res.data);
         setProducts(res.data);
+        console.log(res.data);
+
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [url]);
+  }, [url , products]);
 
   return (
       <>
@@ -116,13 +117,13 @@ const Allproducts = () => {
                         {items.discountedPrice}
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                          <a href="#" className="text-gray-700">
+                          {/* <a href="#" className="text-gray-700">
                             Edit
-                          </a>
+                          </a> */}
                           <br />
-                          <a href="#" className="text-gray-700">
+                          {/* <a href="#" className="text-gray-700">
                             View
-                          </a>
+                          </a> */}
                         </td>
                       </tr>
                     ))}
@@ -133,7 +134,7 @@ const Allproducts = () => {
           </div>
         </div>
         <div className="flex items-center justify-center pt-6">
-          <a href="#" className="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900">
+          {/* <a href="#" className="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900">
             <span className="hidden lg:block">&larr; Previous</span>
             <span className="block lg:hidden">&larr;</span>
           </a>
@@ -164,7 +165,7 @@ const Allproducts = () => {
           <a href="#" className="mx-2 text-sm font-semibold text-gray-900">
             <span className="hidden lg:block">Next &rarr;</span>
             <span className="block lg:hidden">&rarr;</span>
-          </a>
+          </a> */}
         </div>
       </section>
     </>
