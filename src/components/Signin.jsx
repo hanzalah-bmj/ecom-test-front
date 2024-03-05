@@ -9,7 +9,7 @@ export default function Signin() {
   const [logPwd, setLogPwd] = useState();
   const navigate = useNavigate();
   const { setLoginUser, setLogin } = useData();
-  const url = 'http://localhost:5000/signin';
+  const url = 'http://server.brandsonline.pk/signin';
 
   function login() {
     console.clear();
