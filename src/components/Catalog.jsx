@@ -1,19 +1,21 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 export default function Catalog() {
   const [products, setProducts] = useState([]);
-  const url = 'http://server.brandsonline.pk/catalog';
-  axios
-      .post(url, products)
-      .then((res) => {
-        console.log(products);
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.post('http://server.brandsonline.pk/catalog');
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
   return (
     <div className="mx-auto grid w-full max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
       {products.map((items, index) => (
