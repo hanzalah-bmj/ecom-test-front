@@ -10,7 +10,7 @@ export default function Signin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setLoginUser, setLogin } = useData();
-  const url = 'http://server.brandsonline.pk/signin';
+  const url = 'https://server.brandsonline.pk/signin';
 
   function login() {
     setLoading(true);

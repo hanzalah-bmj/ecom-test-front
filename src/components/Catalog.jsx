@@ -7,7 +7,7 @@ export default function Catalog() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.post('http://server.brandsonline.pk/catalog');
+        const response = await axios.post('https://server.brandsonline.pk/catalog');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
