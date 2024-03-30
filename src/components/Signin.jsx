@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import useData from '../hooks/useData';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react';
 
 export default function Signin() {
-  const [logUName, setLogUName] = useState();
-  const [logPwd, setLogPwd] = useState();
+  const [logUName, setLogUName] = useState('');
+  const [logPwd, setLogPwd] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setLoginUser, setLogin } = useData();
   const url = 'http://server.brandsonline.pk/signin';
 
   function login() {
-    console.clear();
+    setLoading(true);
 
     const person = {
       userName: logUName,
@@ -39,12 +40,24 @@ export default function Signin() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error('Error during login:', err);
+
+        // Log the error details to the console
+        console.error('Error response:', err.response);
+
+        // Show a more specific error message based on the response status
+        if (err.response && err.response.status === 401) {
+          alert('Invalid Email OR Password');
+        } else {
+          alert('An error occurred during login. Please try again.');
+        }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
   return (
-
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
@@ -53,15 +66,16 @@ export default function Signin() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
             Don&apos;t have an account?{' '}
-            {/* <a
-              href="#"
-              title=""
-              className="font-semibold text-black transition-all duration-200 hover:underline"
-            >
-              Create a free account
-            </a> */}
           </p>
-          <form action="#" method="POST" className="mt-8">
+          <form
+            action="#"
+            method="POST"
+            className="mt-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              login();
+            }}
+          >
             <div className="space-y-5">
               <div>
                 <label htmlFor="" className="text-base font-medium text-gray-900">
@@ -70,10 +84,11 @@ export default function Signin() {
                 </label>
                 <div className="mt-2">
                   <input
+                    value={logUName}
+                    onChange={(e) => setLogUName(e.target.value)}
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="text"
                     placeholder="Email"
-                    onChange={(e) => {setLogUName(e.target.value);}}
                   ></input>
                 </div>
               </div>
@@ -83,27 +98,24 @@ export default function Signin() {
                     {' '}
                     Password{' '}
                   </label>
-                  {/* <a href="#" title="" className="text-sm font-semibold text-black hover:underline">
-                    {' '}
-                    Forgot password?{' '}
-                  </a> */}
                 </div>
                 <div className="mt-2">
                   <input
+                    value={logPwd}
+                    onChange={(e) => setLogPwd(e.target.value)}
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="password"
                     placeholder="Password"
-                    onChange={(e) => {setLogPwd(e.target.value);}}
                   ></input>
                 </div>
               </div>
               <div>
                 <button
-                  onClick={login}
-                  type="button"
+                  type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  disabled={loading}
                 >
-                  Get started <ArrowRight className="ml-2" size={16} />
+                  {loading ? 'Logging in...' : 'Get started'} <ArrowRight className="ml-2" size={16} />
                 </button>
               </div>
             </div>
