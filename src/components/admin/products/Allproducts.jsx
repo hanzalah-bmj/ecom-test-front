@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Allproducts = () => {
   const [products, setProducts] = useState([]);
-  const url = 'http://server.brandsonline.pk/catalog';
+  const url = 'https://server.brandsonline.pk/catalog';
 
 
   useEffect(() => {
