@@ -32,6 +32,11 @@ const Header = () => {
     },
   ];
 
+  // Function to handle mobile menu link click
+  const handleLinkClick = () => {
+    setMobileMenuOpen(false); // Close the mobile menu
+  };
+
   return (
     <>
       <header className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5">
@@ -63,6 +68,7 @@ const Header = () => {
             <Link
               key={index}
               to={link.to}
+              onClick={handleLinkClick} // Add onClick event handler
               className="flex cursor-pointer flex-col items-center justify-center"
             >
               {link.icon}
@@ -83,6 +89,7 @@ const Header = () => {
                 <Link
                   key={index}
                   to={link.to}
+                  onClick={handleLinkClick} // Add onClick event handler
                   className="flex cursor-pointer flex-col items-center justify-center"
                 >
                   {link.icon}
@@ -107,7 +114,7 @@ const Header = () => {
             <ul className="text-center font-medium">
               {links.map((link, index) => (
                 <li key={index} className="py-2">
-                  <Link to={link.url}>{link.text}</Link>
+                  <Link to={link.url} onClick={handleLinkClick}>{link.text}</Link>
                 </li>
               ))}
             </ul>
