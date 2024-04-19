@@ -1,0 +1,9 @@
+/* CSS for Banner Component */
+.banner-container {
+    width: 100%;
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: auto;
+  }
