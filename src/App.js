@@ -1,6 +1,8 @@
 // App.js
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux'; // Import Provider
+import store from './store'; // Import your Redux store
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -25,6 +27,7 @@ const DefaultLayout = ({ children }) => (
 
 export default function App() {
   return (
+    <Provider store={store}>
       <Routes>
         <Route path="/" element={<DefaultLayout><Home /></DefaultLayout>} />
         <Route path="/catalog" element={<DefaultLayout><Catalog /></DefaultLayout>} />
@@ -40,5 +43,6 @@ export default function App() {
         <Route path="/admin/*" element={<AdminDashboard />} />
         
       </Routes>
+      </Provider>
   );
 }
