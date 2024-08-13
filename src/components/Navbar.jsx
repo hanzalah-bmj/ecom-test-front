@@ -1,118 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdArrowDropright, IoMdClose } from "react-icons/io";
-import { FaBed } from "react-icons/fa";
-import { TbToolsKitchen3 } from "react-icons/tb";
-import { MdOutdoorGrill } from "react-icons/md";
+import axios from "axios";
 
 const Navbar = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [defaultCategory] = useState("Bedroom");
+
+  // Define navItems here
   const navItems = [
-    { label: "Home", to: "/" },
-    { label: "Catalog", to: "/catalog" },
-    { label: "About US", to: "/about" },
-    { label: "Contact US", to: "/contact" },
+    { label: 'Home', to: '/' },
+    { label: 'Catalog', to: '/catalog' },
+    { label: 'About', to: '/about' },
+    { label: 'Contact', to: '/contact' },
+    { label: 'Cart', to: '/cart' },
   ];
 
-  const categories = [
-    {
-      category: "Bedroom",
-      icon: <FaBed />,
-      menu: [
-        {
-          title: "Bedroom",
-          items: [
-            {
-              label: "Luxurious Italian Bed",
-              to: "",
-            },
-            { label: "Elegant Queen-size Bed", to: "" },
-            {
-              label: "Artisan Wooden Craft Bed",
-              to: "",
-            },
-            { label: "Royal King-size Bed", to: "" },
-          ],
-        },
-        {
-          title: "BEDS",
-          items: [
-            { label: "Classic Italian Bed", to: "" },
-            { label: "Regal Queen-size Bed", to: "" },
-            { label: "Handcrafted Wooden Bed", to: "" },
-            { label: "Majestic King-size Bed", to: "" },
-          ],
-        },
-      ],
-    },
-    {
-      category: "Outdoor",
-      icon: <MdOutdoorGrill />,
+  // Fetch categories from the backend
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/categories');
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
-      menu: [
-        {
-          title: "outdoor",
-          items: [
-            {
-              label: "Sleek Italian Outdoor Bed",
-              to: "",
-            },
-            { label: "Outdoor Queen-size Bed", to: "" },
-            {
-              label: "Natural Wooden Craft Bed",
-              to: "",
-            },
-            {
-              label: "Innovative King-size Outdoor Bed",
-              to: "new-",
-            },
-          ],
-        },
-        {
-          title: "LAMPS",
-          items: [
-            {
-              label: "Vibrant Italian Purple Lamp",
-              to: "",
-            },
-            { label: "High-tech APEX Lamp", to: "" },
-            { label: "Modern PIXAR Lamp", to: "" },
-            { label: "Ambient Nightlamp", to: "" },
-          ],
-        },
-      ],
-    },
-    {
-      category: "Kitchen",
-      icon: <TbToolsKitchen3 />,
-      menu: [
-        {
-          title: "kitchen",
-          items: [
-            { label: "Gourmet Italian Bed", to: "" },
-            { label: "Designer Queen-size Bed", to: "" },
-            {
-              label: "Premium Wooden Craft Bed",
-              to: "",
-            },
-            { label: "Modern King-size Bed", to: "" },
-          ],
-        },
-        {
-          title: "SPECIAL",
-          items: [
-            { label: "Aromatherapy Humidifier", to: "" },
-            { label: "Advanced Bed Cleaner", to: "" },
-            { label: "Smart Vacuum Cleaner", to: "" },
-            { label: "Plush Pillow", to: "" },
-          ],
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const closeSubMenu = () => {
     setDesktopMenuOpen(false);
@@ -124,10 +43,39 @@ const Navbar = () => {
     setSelectedCategory(defaultCategory);
   };
 
+  const getCategoryMenu = (category) => {
+    if (!category) {
+      console.warn('Category is undefined');
+      return null;
+    }
+  
+    // Find child categories
+    const childCategories = categories.filter(cat => cat.categoryParentCategory?._id === category._id);
+  
+    return (
+      <div className="flex flex-col gap-6">
+        {childCategories.length > 0 && (
+          <div className="mx-5">
+            <p className="font-medium text-gray-500">Subcategories</p>
+            <ul className="leading-8 text-sm">
+              {childCategories.map((childCategory) => (
+                <li key={childCategory._id} className="ml-4">
+                  <Link to={`/category/${childCategory.categorySlug}`}>
+                    {childCategory.categoryName}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
       <nav className="md:block hidden relative bg-violet-900">
-        <div className="mx-auto  h-12 w-full max-w-[1200px] items-center md:flex">
+        <div className="mx-auto h-12 w-full max-w-[1200px] items-center md:flex">
           <button
             onClick={openDesktopMenu}
             className="ml-5 flex h-full w-40 cursor-pointer items-center justify-center bg-amber-400"
@@ -138,6 +86,7 @@ const Navbar = () => {
             </div>
           </button>
           <div className="mx-7 flex gap-8">
+            {/* Render nav items */}
             {navItems.map((item, index) => (
               <Link
                 key={index}
@@ -167,59 +116,45 @@ const Navbar = () => {
       </nav>
       {desktopMenuOpen && (
         <section
-          x-show="desktopMenuOpen"
           className={`absolute left-0 right-0 z-10 w-full border-b border-r border-l bg-white ${
-            desktopMenuOpen ? "none" : "block"
-          } `}
+            desktopMenuOpen ? "block" : "none"
+          }`}
         >
           <div className="hidden mx-auto md:flex max-w-[1200px] py-10">
             <div className="w-[300px] border-r">
               <ul className="px-5">
-                {categories.map((category, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      selectedCategory === category.category
-                        ? "active:blue-900 bg-amber-400"
-                        : ""
-                    } flex items-center gap-2 py-2 px-3 hover:bg-neutral- `}
-                    onClick={() =>
-                      setSelectedCategory(
-                        selectedCategory === category.category
-                          ? null
-                          : category.category
-                      )
-                    }
-                  >
-                    {category.icon}
-                    {category.category}
-                    <span className="ml-auto">
-                      <IoMdArrowDropright className="h-4 w-4" />
-                    </span>
-                  </li>
-                ))}
+                {Array.isArray(categories) && categories
+                  .filter(category => !category.categoryParentCategory) // Filter top-level categories
+                  .map((category, index) => (
+                    <li
+                      key={index}
+                      className={`${
+                        selectedCategory === category.categoryName
+                          ? "bg-amber-400"
+                          : ""
+                      } flex items-center gap-2 py-2 px-3 hover:bg-neutral-200 cursor-pointer`}
+                      onClick={() =>
+                        setSelectedCategory(
+                          selectedCategory === category.categoryName
+                            ? null
+                            : category.categoryName
+                        )
+                      }
+                    >
+                      {category.icon}
+                      {category.categoryName}
+                      <span className="ml-auto">
+                        <IoMdArrowDropright className="h-4 w-4" />
+                      </span>
+                    </li>
+                  ))}
               </ul>
             </div>
             <div className="flex w-full justify-between">
               {selectedCategory && (
-                <div className="flex gap-6">
-                  {categories
-                    .find((category) => category.category === selectedCategory)
-                    ?.menu.map((submenu, index) => (
-                      <div key={index} className="mx-5">
-                        <p className="font-medium text-gray-500">
-                          {submenu.title}
-                        </p>
-                        <ul className="leading-8 text-sm">
-                          {submenu.items.map((item, itemIndex) => (
-                            <li key={itemIndex}>
-                              <Link to={item.to}>{item.label}</Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                </div>
+                getCategoryMenu(
+                  categories.find(cat => cat.categoryName === selectedCategory)
+                )
               )}
             </div>
             <button onClick={closeSubMenu} className="absolute top-5 right-5">

@@ -1,0 +1,30 @@
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 150px); /* 5 columns, 150px width each */
+    gap: 10px; /* Space between items */
+    margin-top: 20px;
+}
+
+.media-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px; /* Matches image width */
+}
+
+.thumbnail {
+    width: 150px; /* Image size */
+    height: 150px; /* Image size */
+    object-fit: cover; /* Ensures the image covers the area */
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}

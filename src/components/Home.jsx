@@ -9,6 +9,7 @@ const Home = () => {
       <div className="home-content">
         {/* Other content of your home page */}
       </div>
+      
     </div>
   );
 };

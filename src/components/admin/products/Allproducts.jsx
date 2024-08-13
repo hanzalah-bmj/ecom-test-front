@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
+//Allproduct.jsx
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts, deleteProduct } from '../../../reducers/productsSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Allproducts = () => {
-  const [products, setProducts] = useState([]);
-  const url = 'https://server.brandsonline.pk/catalog';
+  const dispatch = useDispatch();
+  const { products, status, error } = useSelector((state) => state.products);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-    axios
-      .post(url, products)
-      .then((res) => {
-        setProducts(res.data);
-        console.log(res.data);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [url , products]);
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProduct(id));
+  };
+
+  if (status === 'loading') return <p>Loading...</p>;
+  if (status === 'failed') return <p>{error}</p>;
+
+  const handleAddNewProduct = () => {
+    navigate('/admin/products/addproducts');
+  };
 
   return (
       <>
@@ -33,7 +38,7 @@ const Allproducts = () => {
           <div>
             <button
               type="button"
-              className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" onClick={handleAddNewProduct}
             >
               Add new product
             </button>
@@ -76,7 +81,13 @@ const Allproducts = () => {
                         scope="col"
                         className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
                       >
-                        Price
+                        Regular price (₨)
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
+                      >
+                        Sale price (₨)
                       </th>
                       <th scope="col" className="relative px-4 py-3.5">
                         <span className="sr-only">Edit / View</span>
@@ -84,46 +95,46 @@ const Allproducts = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {products.map((items, index) => (
-                      <tr key={index}>
+                    {products.map((product) => (
+                      <tr key={product._id}>
                         <td className="whitespace-nowrap px-4 py-4">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                             <img
                         className="h-10 w-10 rounded-full object-cover"
-                        src={items.productImg}
+                        src={product.productImg}
                         alt=""
                       />
                             </div>
                             <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">{items.productName}</div>
+                              <div className="text-sm font-medium text-gray-900">{product.productName}</div>
                             </div>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
-                          <div className="text-sm text-gray-900 ">{items.SKU}</div>
+                          <div className="text-sm text-gray-900 ">{product.SKU}</div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
                           <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                            Active
+                          {product.Status}
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                        {items.Category}
+                        {product.Category}
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                        {items.productPrice}
-                        <br />
-                        {items.discountedPrice}
+                        {product.productPrice} (₨)
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
+                        {product.discountedPrice} (₨)
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                          {/* <a href="#" className="text-gray-700">
-                            Edit
-                          </a> */}
-                          <br />
-                          {/* <a href="#" className="text-gray-700">
-                            View
-                          </a> */}
+                        <button
+  onClick={() => navigate(`/admin/products/edit-product/${product._id}`)}
+  className="mr-2 px-4 py-2 bg-yellow-500 text-white rounded"
+>Edit</button>
+
+                        <button onClick={() => handleDeleteProduct(product._id)} className="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
                         </td>
                       </tr>
                     ))}
@@ -134,38 +145,6 @@ const Allproducts = () => {
           </div>
         </div>
         <div className="flex items-center justify-center pt-6">
-          {/* <a href="#" className="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900">
-            <span className="hidden lg:block">&larr; Previous</span>
-            <span className="block lg:hidden">&larr;</span>
-          </a>
-          <a
-            href="#"
-            className="mx-1 flex items-center rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
-          >
-            1
-          </a>
-          <a
-            href="#"
-            className="mx-1 flex items-center rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
-          >
-            2
-          </a>
-          <a
-            href="#"
-            className="mx-1 flex items-center rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
-          >
-            3
-          </a>
-          <a
-            href="#"
-            className="mx-1 flex items-center rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
-          >
-            4
-          </a>
-          <a href="#" className="mx-2 text-sm font-semibold text-gray-900">
-            <span className="hidden lg:block">Next &rarr;</span>
-            <span className="block lg:hidden">&rarr;</span>
-          </a> */}
         </div>
       </section>
     </>

@@ -4,10 +4,10 @@ import axios from 'axios';
 
 export default function Allusers() {
   const [person, setPerson] = useState([]);
-  const url = 'http://localhost:5000/userdata';
+  const url = 'http://localhost:5000/users';
   useEffect(() => {
   axios
-      .post(url, person)
+      .get(url, person)
       .then((res) => {
         setPerson(res.data);
         console.log(res.data);

@@ -1,113 +1,167 @@
-import React from 'react'
-import { ChevronLeft, ChevronRight, Heart, Share } from 'lucide-react'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchProductDetails } from '../reducers/productsSlice';
 
-export function Product() {
+const Product = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const productDetails = useSelector((state) => state.products.productDetails[id]);
+  const status = useSelector((state) => state.products.status);
+  const error = useSelector((state) => state.products.error);
+
+  useEffect(() => {
+    if (!productDetails && status !== 'loading') {
+      console.log('Dispatching fetchProductDetails for product ID:', id);
+      dispatch(fetchProductDetails(id));
+    }
+  }, [id, dispatch, productDetails, status]);
+
+  console.log('Product Details:', productDetails);
+  console.log('Status:', status);
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed') {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!productDetails) {
+    return <div>Product not found</div>;
+  }
+
   return (
-    <div className="sp mx-auto max-w-7xl px-2 py-10 lg:px-0">
-      <div className="overflow-hidden">
-        <div className="mb-9 pt-4 md:px-6 md:pt-7 lg:mb-2 lg:p-8 2xl:p-10 2xl:pt-10">
-          <div className="items-start justify-between lg:flex lg:space-x-8">
-            <div className="mb-6 items-center justify-center overflow-hidden md:mb-8 lg:mb-0 xl:flex">
-              <div className="w-full xl:flex xl:flex-row-reverse">
-                <div className="relative mb-2.5 w-full shrink-0 overflow-hidden rounded-md border md:mb-3 xl:w-[480px] 2xl:w-[650px]">
-                  <div className="relative flex items-center justify-center">
-                    <img
-                      alt="Product gallery 1"
-                      src="https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
-                      width={650}
-                      height={590}
-                      className="rounded-lg object-cover md:h-[300px] md:w-full lg:h-full"
-                    />
-                  </div>
-                  <div className="absolute top-2/4 z-10 flex w-full items-center justify-between">
-                    <ChevronLeft className="text-white" />
-                    <ChevronRight className="text-white" />
-                  </div>
-                </div>
-                <div className="flex gap-2 xl:flex-col">
-                  {[
-                    'https://images.unsplash.com/photo-1580902394836-21e0d429b7f4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=924&q=80',
-                    'https://images.unsplash.com/photo-1580902394743-1394a7ec93d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                    'https://images.unsplash.com/photo-1580902394767-81b0facc0894?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                  ].map((image, index) => (
-                    <div
-                      key={image}
-                      className="border-border-base flex cursor-pointer items-center justify-center overflow-hidden rounded border transition hover:opacity-75 "
-                    >
-                      <img
-                        alt={`Product ${index}`}
-                        src={image}
-                        decoding="async"
-                        loading="lazy"
-                        className="h-20 w-20 object-cover md:h-24 md:w-24 lg:h-28 lg:w-28 xl:w-32"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+
+<div className="mx-auto max-w-7xl px-4 md:px-8 2xl:px-16">
+      <div className="pt-8">
+        <div className="flex items-center">
+          <ol className="flex w-full items-center overflow-hidden">
+            <li className="text-body hover:text-heading px-2.5 text-sm transition duration-200 ease-in first:pl-0 last:pr-0">
+              <a href="#">Home</a>
+            </li>
+            <li className="text-body mt-0.5 text-base">/</li>
+            <li className="text-body hover:text-heading px-2.5 text-sm transition duration-200 ease-in first:pl-0 last:pr-0">
+              <a className="capitalize" href="#">
+                products
+              </a>
+            </li>
+            <li className="text-body mt-0.5 text-base">/</li>
+            <li className="text-body hover:text-heading px-2.5 text-sm transition duration-200 ease-in first:pl-0 last:pr-0">
+              <a className="capitalize" href="#">
+              {productDetails.productName}
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div className="block grid-cols-9 items-start gap-x-10 pb-10 pt-7 lg:grid lg:pb-14 xl:gap-x-14 2xl:pb-20">
+        <div className="col-span-5 grid grid-cols-2 gap-2.5">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i} className="col-span-1 transition duration-150 ease-in hover:opacity-90">
+              <img
+                src={productDetails.productImg && productDetails.productImg }
+                alt={productDetails.productName}
+                className="w-full object-cover"
+              />
             </div>
-            <div className="flex shrink-0 flex-col lg:w-[430px] xl:w-[470px] 2xl:w-[480px]">
-              <div className="pb-5">
-                <h2 className="text-lg font-semibold md:text-xl xl:text-2xl">Nike Airmax Pro V2</h2>
-                <p className="mt-4 font-semibold">$250</p>
+          ))}
+        </div>
+        <div className="col-span-4 pt-8 lg:pt-0">
+          <div className="mb-7 border-b border-gray-300 pb-7">
+            <h2 className="text-heading mb-3.5 text-lg font-bold md:text-xl lg:text-2xl 2xl:text-3xl">
+            {productDetails.productName}
+            </h2>
+            <div className="mt-5 flex items-center ">
+              <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
+                Rs.{productDetails.discountedPrice}
               </div>
-              <div className="mb-2 pt-0.5">
-                <h4 className="text-15px mb-3 font-normal capitalize text-opacity-70">
-                  available in:
-                </h4>
-                <ul className="flex flex-wrap space-x-2">
-                  <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10">
-                    8 UK
-                  </li>
-                  <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10">
-                    9 UK
-                  </li>
-                  <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10">
-                    10 UK
-                  </li>
-                </ul>
-              </div>
-              <div className="pb-2" />
-              <div className="space-y-2.5 pt-1.5 md:space-y-3.5 lg:pt-3 xl:pt-4">
-                <button
-                  type="button"
-                  className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              <span className="font-segoe pl-2 text-sm text-gray-400 line-through md:text-base lg:text-lg xl:text-xl">
+              Rs.{productDetails.productPrice}
+              </span>
+            </div>
+          </div>
+      
+          <div className="space-s-4 3xl:pr-48 flex items-center gap-2 border-b border-gray-300 py-8  md:pr-32 lg:pr-12 2xl:pr-32">
+            <div className="group flex h-11 flex-shrink-0 items-center justify-between overflow-hidden rounded-md border border-gray-300 md:h-12">
+              <button
+                className="text-heading hover:bg-heading flex h-full w-10 flex-shrink-0 items-center justify-center border-e border-gray-300 transition duration-300 ease-in-out focus:outline-none md:w-12"
+                disabled
+              >
+                +
+              </button>
+              <span className="duration-250 text-heading flex h-full w-12  flex-shrink-0 cursor-default items-center justify-center text-base font-semibold transition-colors ease-in-out  md:w-20 xl:w-24">
+                1
+              </span>
+              <button className="text-heading hover:bg-heading flex h-full w-10 flex-shrink-0 items-center justify-center border-s border-gray-300 transition duration-300 ease-in-out focus:outline-none md:w-12">
+                -
+              </button>
+            </div>
+            <button
+              type="button"
+              className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
+              Add to cart
+            </button>
+          </div>
+          <div className="py-6 ">
+            <ul className="space-y-5 pb-1 text-sm">
+              <li>
+                <span className="text-heading inline-block pr-2 font-semibold">SKU:</span>
+                N/A
+              </li>
+              <li>
+                <span className="text-heading inline-block pr-2 font-semibold">Category:</span>
+                <a className="hover:text-heading transition hover:underline" href="#">
+                  kids
+                </a>
+              </li>
+              <li className="productTags">
+                <span className="text-heading inline-block pr-2 font-semibold">Tags:</span>
+                <a
+                  className="hover:text-heading inline-block pr-1.5 transition last:pr-0 hover:underline"
+                  href="#"
                 >
-                  Add To Cart
-                </button>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                  >
-                    <Heart size={16} className="mr-3" />
-                    <span className="block">Wishlist</span>
-                  </button>
-                  <div className="relative">
-                    <button
-                      type="button"
-                      className="inline-flex w-full items-center justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                    >
-                      <Share size={16} className="mr-3" />
-                      <span className="block">Share</span>
-                    </button>
-                  </div>
-                </div>
+                  Sneakers
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="shadow-sm ">
+            <header className="flex cursor-pointer items-center justify-between border-t border-gray-300 py-5 transition-colors md:py-6">
+              <h2 className="text-heading pr-2 text-sm font-semibold leading-relaxed md:text-base lg:text-lg">
+                Product Details
+              </h2>
+              <div className="relative flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                <div className="bg-heading h-0.5 w-full rounded-sm" />
+                <div className="bg-heading absolute bottom-0 h-full w-0.5 origin-bottom scale-0 transform rounded-sm transition-transform duration-500 ease-in-out" />
               </div>
-              <div className="pt-6 xl:pt-8">
-                <h3 className="text-15px mb-3 font-semibold sm:text-base lg:mb-3.5">
-                  Product Details:
-                </h3>
-                <p className="text-sm">
-                  A chip (often just chip, or crisp in British and Irish English) may be a thin
-                  slice of potato that has been either deep fried or baked until crunchy. theyre
-                  commonly served as a snack, side dish, or appetizer.
-                </p>
+            </header>
+            <div>
+              <div className="pb-6 text-sm leading-7 text-gray-600 md:pb-7">
+              {productDetails.productDes}
               </div>
             </div>
+          </div>
+          <div className="">
+            <header className="flex cursor-pointer items-center justify-between border-t border-gray-300 py-5 transition-colors md:py-6">
+              <h2 className="text-heading pr-2 text-sm font-semibold leading-relaxed md:text-base lg:text-lg">
+                Additional Information
+              </h2>
+            </header>
+          </div>
+          <div className="">
+            <header className="flex cursor-pointer items-center justify-between border-t border-gray-300 py-5 transition-colors md:py-6">
+              <h2 className="text-heading pr-2 text-sm font-semibold leading-relaxed md:text-base lg:text-lg">
+                Customer Reviews
+              </h2>
+            </header>
           </div>
         </div>
       </div>
     </div>
   )
 }
+export default Product;
+

@@ -2,12 +2,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux'; // Import Provider
-import store from './store'; // Import your Redux store
+import { store } from './store'; // Import your Redux store
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import { Footer } from './components/Footer';
 import Home from './components/Home';
 import Catalog from './components/Catalog';
+import Product from './components/Product';
+import CategoryProducts from './components/CategoryProducts';
 import About from './components/About';
 import Contact from './components/Contact';
 import Cart from './components/Cart';
@@ -31,6 +33,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<DefaultLayout><Home /></DefaultLayout>} />
         <Route path="/catalog" element={<DefaultLayout><Catalog /></DefaultLayout>} />
+        <Route path="/product/:id" element={<DefaultLayout><Product /></DefaultLayout>} />
+        <Route path="/category/:slug" element={<DefaultLayout><CategoryProducts /> </DefaultLayout>} />
         <Route path="/about" element={<DefaultLayout><About /></DefaultLayout>} />
         <Route path="/contact" element={<DefaultLayout><Contact /></DefaultLayout>} />
         <Route path="/cart" element={<DefaultLayout><Cart /></DefaultLayout>} />

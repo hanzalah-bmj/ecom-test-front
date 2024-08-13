@@ -10,7 +10,7 @@ export default function Signin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setLoginUser, setLogin } = useData();
-  const url = 'http://localhost:5000/signin';
+  const url = 'http://localhost:5000/user';
 
   function login() {
     setLoading(true);
